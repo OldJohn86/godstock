@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     current_path = sys.argv[0].rstrip('/daily_data.py')
     # print(current_path)
-    config = os.path.join(current_path, 'ts_config.ini')
+    config = os.path.join(current_path, '../ts_config.ini')
     print(config)
 
     ts_info = read_ini(config, 'tushare')
