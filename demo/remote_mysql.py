@@ -3,29 +3,12 @@ import os
 import sys
 import time
 import datetime
-import paramiko
-#import telnetlib
-import getpass
-import smtplib
-import pymysql
-                    
 from datetime import date
-from configparser import ConfigParser
-from email import encoders
-from email.header import Header
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+
+import pymysql
 import tushare as ts
-                             
-def read_ini(config, option):
-    info = dict()
-    cf = ConfigParser()
-    cf.read(config, encoding='utf-8')
-    keys = cf.options(option)
-    for each in keys:
-        info[each] = cf.get(option, each)
-    # print(info)
-    return info
+#自定义的module
+import cfg
 
 # 数据库类定义
 class MysqlDB():
@@ -131,7 +114,7 @@ if __name__ == '__main__':
     config = os.path.join(current_path, '../ts_config.ini')
     print(config)
 
-    mysql_info = read_ini(config, 'mysql')
+    mysql_info = cfg.read_ini(config, 'mysql')
     host = str(mysql_info.get('host', None))
     print(host)
     user = str(mysql_info.get('user', None))
