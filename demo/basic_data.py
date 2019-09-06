@@ -16,16 +16,26 @@ print(exchangelist)
 #HKEX - 港交所（未上线）
 
 def get_cal(token):
+    year = date.today().strftime('%Y')
+    # print(year)
     pro = ts.pro_api(token)
     for exchange in exchangelist:
         try:
             cal = pro.trade_cal(exchange=exchange, start_date='20190101', end_date='20191231')
-            print(cal)
-            cal.to_excel("backup/cal_%s.xls" % exchange)
+            #print(cal)
+            for row in cal.itertuples():
+                if row.is_open is 1:
+                    # print(row.cal_date)
+                    exchangecal.append(str(row.cal_date))
+            # print(exchangecal)
+            cal.to_excel("backup/%s_%scal.xls" % (exchange, year))
         except Exception as err:
             print(err)
+    return exchangecal
 
 def get_stocklist(token):
+    y_m_d = date.today().strftime('%Y%m%d')
+    # print(y_m_d)
     pro = ts.pro_api(token)
     for exchange in exchangelist:
         try:
@@ -33,14 +43,15 @@ def get_stocklist(token):
             #print(stock)
             for row in stock.itertuples():
                 #print(row.ts_code)
-                stocklist.append(str(row.ts_code))
+                stocklist.append(str(row.ts_code)[:-3])
             # print(stocklist)
-            stock.to_excel("backup/stocklist_%s.xls" % exchange)
+            stock.to_excel("backup/%s_%sstocklist.xls" % (exchange, y_m_d))
         except Exception as err:
             print(err)
     return stocklist
 
 stocklist = []
+exchangecal = []
 if __name__ == "__main__":
     y_m_d = date.today().strftime('%Y%m%d')
     # print(y_m_d)
@@ -53,6 +64,7 @@ if __name__ == "__main__":
     ts_token = str(ts_info.get('cpp_token', None))
     # print(ts_token)
     
-    # get_cal(ts_token)
+    exchangecal = get_cal(ts_token)
+    print(exchangecal)
     stocklist = get_stocklist(ts_token)
     print(stocklist)
