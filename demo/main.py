@@ -48,6 +48,7 @@ if __name__ == "__main__":
 
     engine = create_engine("mysql+pymysql://%s:%s@%s:3306/%s?charset=utf8" % \
             (user, passwd, host, database))
+
     #basic cal data
     for exchange in exchangelist:
         try:
@@ -57,7 +58,17 @@ if __name__ == "__main__":
                     if_exists='replace',index=False,index_label=False)
         except Exception as err:
             print(err)
-    
+
+    #company data
+    for exchange in exchangelist:
+        try:
+            df = pd.read_excel("backup/%s_%scompanylist.xls" % (exchange, y_m_d))
+            print(df)
+            df.to_sql(name=str(exchange.lower() +'_'+ y_m_d +'companylist'),con=engine, \
+                    if_exists='replace',index=False,index_label=False)
+        except Exception as err:
+            print(err)
+
     #basic stocklist data
     for exchange in exchangelist:
         try:
@@ -87,4 +98,4 @@ if __name__ == "__main__":
             # print('Seq: ' + str(i+1) + ' of ' + str(total) + ' Code: ' + str(stock_pool[i]))
             print('Seq: ' + str(i+1) + ' of ' + str(total) + ' Code: ' + str(stocklist[i]))
         except Exception as err:
-            print(err) 
+            print(err)
