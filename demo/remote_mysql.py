@@ -6,6 +6,13 @@ import datetime
 from datetime import date
 
 import pymysql
+# 指定过滤告警的类别为 pymysql.Warning类
+from warnings import filterwarnings
+# 动作为"error",该动作可以抛错，则可以用try ... except 捕获
+#filterwarnings("error",category=pymysql.Warning)
+# 动作为"ignore", 表示忽略
+filterwarnings("ignore",category=pymysql.Warning)
+
 import tushare as ts
 #自定义的module
 import cfg
@@ -58,22 +65,18 @@ class MysqlDB():
             self.conn.rollback()
     
     def query(self):
-        sql = "SELECT * FROM EMPLOYEE \
-               WHERE INCOME > %s" % (1000)
+        #sql = "SELECT * FROM EMPLOYEE \
+        #       WHERE INCOME > %s" % (1000)
+        sql = "SELECT * FROM daily_600519 where close > 1000"
         try:
             # 执行SQL语句
             self.cursor.execute(sql)
             # 获取所有记录列表
             results = db.cursor.fetchall()
             for row in results:
-                fname = row[0]
-                lname = row[1]
-                age = row[2]
-                sex = row[3]
-                income = row[4]
                 # 打印结果
-                print ("fname=%s,lname=%s,age=%s,sex=%s,income=%s" % \
-                        (fname, lname, age, sex, income ))
+                print ("ts_code=%s \ttrade_date=%s \tclose=%s \tvol=%s \tamount=%s" % \
+                        (row[1], row[2], row[6], row[10], row[11]))
         except:
             print ("Error: unable to fetch data")
 
@@ -112,29 +115,29 @@ if __name__ == '__main__':
     current_path = sys.argv[0].rstrip('/remote_mysql.py')
     # print(current_path)
     config = os.path.join(current_path, '../ts_config.ini')
-    print(config)
+    # print(config)
 
     mysql_info = cfg.read_ini(config, 'mysql')
     host = str(mysql_info.get('host', None))
-    print(host)
+    # print(host)
     user = str(mysql_info.get('user', None))
-    print(user)
+    # print(user)
     passwd = str(mysql_info.get('passwd', None))
-    print(passwd)
+    # print(passwd)
     database = str(mysql_info.get('database', None))
-    print(database)
+    # print(database)
 
     with MysqlDB(host=host, user=user, passwd=passwd, db=database) as db:
         #1 获取DB版本信息
         db.version()
         #2 创建数据库表
-        db.create_table('EMPLOYEE')
+        # db.create_table('EMPLOYEE')
         #3 SQL 插入语句
-        db.insert('sss')
+        # db.insert('sss')
         #4 SQL 查询语句
         db.query()
         #5 SQL 更新语句
-        db.update()
-        db.query()
+        # db.update()
+        # db.query()
         #6 SQL 删除语句
         #db.delete()
