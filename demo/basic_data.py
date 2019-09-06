@@ -16,8 +16,8 @@ print(exchangelist)
 #HKEX - 港交所（未上线）
 
 def get_cal(token):
-    year = date.today().strftime('%Y')
-    # print(year)
+    y_m_d = date.today().strftime('%Y%m%d')
+    # print(y_m_d)
     pro = ts.pro_api(token)
     for exchange in exchangelist:
         try:
@@ -28,7 +28,7 @@ def get_cal(token):
                     # print(row.cal_date)
                     exchangecal.append(str(row.cal_date))
             # print(exchangecal)
-            cal.to_excel("backup/%s_%scal.xls" % (exchange, year))
+            cal.to_excel("backup/%s_%scal.xls" % (exchange, y_m_d))
         except Exception as err:
             print(err)
     return exchangecal
