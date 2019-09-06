@@ -50,7 +50,26 @@ def get_stocklist(token):
             print(err)
     return stocklist
 
+def get_companylist(token):
+    y_m_d = date.today().strftime('%Y%m%d')
+    # print(y_m_d)
+    pro = ts.pro_api(token)
+    for exchange in exchangelist:
+        try:
+            company = pro.stock_company(exchange=exchange, fields='ts_code,chairman,manager,secretary,reg_capital,setup_date,province')
+            #print(stock)
+            for row in company.itertuples():
+                #print(row.ts_code)
+                companylist.append(str(row.ts_code))
+            # print(companylist)
+            company.to_excel("backup/%s_%scompanylist.xls" % (exchange, y_m_d))
+        except Exception as err:
+            print(err)
+    return companylist
+
+
 stocklist = []
+companylist = []
 exchangecal = []
 if __name__ == "__main__":
     y_m_d = date.today().strftime('%Y%m%d')
@@ -64,7 +83,9 @@ if __name__ == "__main__":
     ts_token = str(ts_info.get('cpp_token', None))
     # print(ts_token)
     
-    exchangecal = get_cal(ts_token)
-    print(exchangecal)
-    stocklist = get_stocklist(ts_token)
-    print(stocklist)
+    #exchangecal = get_cal(ts_token)
+    #print(exchangecal)
+    #stocklist = get_stocklist(ts_token)
+    #print(stocklist)
+    companylist = get_companylist(ts_token)
+    print(companylist)
