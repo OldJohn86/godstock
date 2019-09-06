@@ -43,7 +43,7 @@ if __name__ == "__main__":
             df = pro.daily(ts_code=stocklist[i], start_date='19920101', end_date=date.today().strftime('%Y%m%d'))
             # df = pro.daily(ts_code=stock_pool[i], start_date='20190801', end_date='20190831')
             # df.to_excel("backup/daily_%s.xls" % str(stock_pool[i]))
-            df.to_excel("backup/daily_%s.xls" % str(stocklist[i]))
+            df.to_excel("backup/daily_%s.xls" % str(stocklist[i])[:-3])
             # print('Seq: ' + str(i+1) + ' of ' + str(total) + ' Code: ' + str(stock_pool[i]))
             print('Seq: ' + str(i+1) + ' of ' + str(total) + ' Code: ' + str(stocklist[i]))
 
