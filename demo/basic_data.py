@@ -43,7 +43,7 @@ def get_stocklist(token):
             #print(stock)
             for row in stock.itertuples():
                 #print(row.ts_code)
-                stocklist.append(str(row.ts_code)[:-3])
+                stocklist.append(str(row.ts_code))
             # print(stocklist)
             stock.to_excel("backup/%s_%sstocklist.xls" % (exchange, y_m_d))
         except Exception as err:
