@@ -97,6 +97,6 @@ companylist = []
 if __name__ == "__main__":
     y_m_d = date.today().strftime('%Y%m%d')
     # print(y_m_d)
-    current_path = sys.argv[0].rstrip('/basic_data.py')
+    cur_path = sys.argv[0].rstrip('/basic_data.py')
     # print(current_path)
-    main(current_path)
+    main(cur_path)
