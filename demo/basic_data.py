@@ -22,7 +22,7 @@ SZSE - 深交所
 HKEX - 港交所（未上线）
 '''
 exchangelist = ['SSE', 'SZSE']
-print(exchangelist)
+# print(exchangelist)
 
 '''
 get exhcange opencal
