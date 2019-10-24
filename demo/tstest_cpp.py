@@ -101,7 +101,6 @@ if __name__ == "__main__":
             print('Seq: ' + str(i+1) + ' of ' + str(total) + ' Code: ' + str(stock_pool[i]))
             msg += str(df) + '\n'
             print(msg)
-        except Exception as aa:
-            print(aa)
-    
+        except Exception as e:
+            print(e)
     send_mail(config, msg)
