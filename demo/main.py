@@ -1,4 +1,9 @@
+#!/usr/env/bin python3
 # -*- coding: utf-8 -*-
+
+__author__ = 'Jonathan Chen'
+__date__   = '2019-09-12'
+
 import os
 import sys
 import time
@@ -25,13 +30,13 @@ import tick_data
 stocklist = []
 exchangelist = ['SSE', 'SZSE']
 print(exchangelist)
-#SSE  - 上交所
-#SZSE - 深交所
-#HKEX - 港交所（未上线）
+'''
+SSE  - 上交所
+SZSE - 深交所
+HKEX - 港交所（未上线)
+'''
 y_m_d = date.today().strftime('%Y%m%d')
 print(y_m_d)
-
-
 
 # basic opencal data
 def sync_opencal_to_sql(engine):
@@ -89,31 +94,38 @@ def sync_dailydata_to_sql(engine):
         except Exception as err:
             print(err)
 
-if __name__ == "__main__":
-    current_path = sys.argv[0].rstrip('/main.py')
-    config = os.path.join(current_path, '../ts_config.ini')
-    #print(config)
+def sync_all_to_sql(engine):
+    # sync open cal to sql
+    sync_opencal_to_sql(engine)
+    # sync companylist to sql
+    sync_companylist_to_sql(engine)
+    # sync stocllist to sql
+    sync_stocklist_to_sql(engine)
+    # sync daily date to sql
+    sync_dailydata_to_sql(engine)
 
+def backup_all_to_excel(path):
+    basic_data.main(path)
+
+
+'''
     stock_info = cfg.read_ini(config, 'stock')
     stock_pool = str(stock_info.get('stock_pool', None)).split()
     # print(stock_pool)
+'''
+if __name__ == "__main__":
+    cur_path = sys.argv[0].rstrip('/main.py')
+    config = os.path.join(cur_path, '../ts_config.ini')
+    #print(config)
+
+    backup_all_to_excel(cur_path)
+
     mysql_info = cfg.read_ini(config, 'mysql')
     host = str(mysql_info.get('host', None))
     user = str(mysql_info.get('user', None))
     passwd = str(mysql_info.get('passwd', None))
     database = str(mysql_info.get('database', None))
-
     engine = create_engine("mysql+pymysql://%s:%s@%s:3306/%s?charset=utf8" % \
             (user, passwd, host, database))
+    sync_all_to_sql(engine)
 
-    # sync open cal to sql
-    #sync_opencal_to_sql(engine)
-
-    # sync companylist to sql
-    #sync_companylist_to_sql(engine)
-
-    # sync stocllist to sql
-    # sync_stocklist_to_sql(engine)
-
-    # sync daily date to sql
-    sync_dailydata_to_sql(engine)
