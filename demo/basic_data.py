@@ -76,10 +76,8 @@ def get_companylist(token):
             print(err)
     return companylist
 
-def main():
-    current_path = sys.argv[0].rstrip('/basic_data.py')
-    # print(current_path)
-    config = os.path.join(current_path, '../ts_config.ini')
+def main(path):
+    config = os.path.join(path, '../ts_config.ini')
     print(config)
     ts_info = cfg.read_ini(config, 'tushare')
     ts_token = str(ts_info.get('cpp_token', None))
@@ -99,4 +97,6 @@ companylist = []
 if __name__ == "__main__":
     y_m_d = date.today().strftime('%Y%m%d')
     # print(y_m_d)
-    main()
+    current_path = sys.argv[0].rstrip('/basic_data.py')
+    # print(current_path)
+    main(current_path)
