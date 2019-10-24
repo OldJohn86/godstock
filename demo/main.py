@@ -37,6 +37,7 @@ print(exchangelist)
 
 def backup_all_to_excel(path):
     basic_data.main(path)
+    daily_data.main(path)
 
 def sync_all_to_sql(path):
     sync_data.main(path)
