@@ -24,7 +24,6 @@ import cfg
 import tick_data
 import remote_mysql
 import basic_data
-import daily_data
 import sync_data
 
 '''
@@ -35,15 +34,10 @@ HKEX - 港交所（未上线)
 exchangelist = ['SSE', 'SZSE']
 print(exchangelist)
 
-def backup_all_to_excel(path):
+def main(path):
     basic_data.main(path)
-    daily_data.main(path)
-
-def sync_all_to_sql(path):
     sync_data.main(path)
 
 if __name__ == "__main__":
     cur_path = sys.argv[0].rstrip('/main.py')
-    backup_all_to_excel(cur_path)
-    sync_all_to_sql(cur_path)
-
+    main(cur_path)
