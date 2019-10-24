@@ -25,10 +25,10 @@ exchangelist = ['SSE', 'SZSE']
 print(exchangelist)
 
 '''
-get exhcange cal
+get exhcange opencal
 '''
-exchangecal = []
-def get_cal(token):
+opencal = []
+def get_opencal(token):
     y_m_d = date.today().strftime('%Y%m%d')
 #    print(y_m_d)
     pro = ts.pro_api(token)
@@ -39,12 +39,12 @@ def get_cal(token):
             for row in cal.itertuples():
                 if row.is_open is 1:
 #                    print(row.cal_date)
-                    exchangecal.append(str(row.cal_date))
-#            print(exchangecal)
-            cal.to_excel("backup/%s_%scal.xls" % (exchange, y_m_d))
+                    opencal.append(str(row.cal_date))
+#            print(opencal)
+            cal.to_excel("backup/%s_%sopencal.xls" % (exchange, y_m_d))
         except Exception as err:
             print(err)
-    return exchangecal
+    return opencal
 
 '''
 get stocklist
@@ -56,7 +56,8 @@ def get_stocklist(token):
     pro = ts.pro_api(token)
     for exchange in exchangelist:
         try:
-            stock = pro.stock_basic(exchange=exchange, list_status='L', fields='ts_code,symbol,name,area,industry,list_date')
+            stock = pro.stock_basic(exchange=exchange, list_status='L',
+                    fields='ts_code,symbol,name,area,industry,list_date')
 #            print(stock)
             for row in stock.itertuples():
 #                print(row.ts_code)
@@ -95,16 +96,17 @@ def main(path):
     ts_info = cfg.read_ini(config, 'tushare')
     ts_token = str(ts_info.get('cpp_token', None))
 #    print(ts_token)
-    exchangecal = get_cal(ts_token)
-    print(exchangecal)
+    opencal = get_opencal(ts_token)
     stocklist = get_stocklist(ts_token)
-    print(stocklist)
     companylist = get_companylist(ts_token)
-    print(companylist)
+    return (opencal, stocklist, companylist)
 
 if __name__ == "__main__":
     y_m_d = date.today().strftime('%Y%m%d')
 #    print(y_m_d)
     cur_path = sys.argv[0].rstrip('/basic_data.py')
 #    print(current_path)
-    main(cur_path)
+    (opencal, stocklist, companylist) = main(cur_path)
+    print(opencal)
+    print(stocklist)
+    print(companylist)
