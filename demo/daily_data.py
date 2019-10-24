@@ -72,9 +72,7 @@ def main(path):
 获取stock daily data, backup to excel sheet
 '''
 if __name__ == "__main__":
-    y_m_d = date.today().strftime('%Y%m%d')
-#    print(y_m_d)
     cur_path = sys.argv[0].rstrip('/daily_data.py')
 #    print(cur_path)
-#    main_stockpool(cur_path)
+    main_stockpool(cur_path)
     main(cur_path)
