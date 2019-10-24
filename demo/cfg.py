@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+__author__ = 'Jonathan Chen'
+__date__   = '2019-09-10'
+
+'''
+获取 user 配置信息
+'''
+
 import os
 import sys
 import time
